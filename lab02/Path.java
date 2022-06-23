@@ -12,7 +12,6 @@ public class Path {
     public double getCurrX(){
         return curr.getX();
     }
-
     public double getCurrY(){
         return curr.getY();
     }
