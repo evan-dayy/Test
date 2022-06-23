@@ -1,12 +1,12 @@
 /** A point in 2D space.
  *  @author Antares Chen and Jedidiah Tsang
  */
-class Point {
+class Point { // why reduce the public
 
     /** The x coordinate of Point. */
-    public double x;
+    private double x;
     /** The y coordinate of Point. */
-    public double y;
+    private double y;
 
     /** A constructor that returns a point at the origin. */
     Point() {

@@ -1,15 +1,13 @@
 /** A class that represents a path via pursuit curves. */
 public class Path {
-
-    public Point curr = new Point(2,3);
-    public Point next = new Point(2,3);
+    public Point next;
+    public Point curr;
 
     public Path(double x, double y) {
-        // more code goes here!
-        next.x = x;
-        next.y = y;
+        // Constructor
+        this.next = new Point(x,y);
+        this.curr = new Point(0, 3);
     }
-
 
     public double getCurrX(){
         return curr.getX();
@@ -30,13 +28,16 @@ public class Path {
         return this.curr;
     }
 
-    public void setCurrentPoint(Point curr, Point next) {
+    public void setCurrentPoint(Point next) {
         this.curr = next;
     }
 
     public void iterate(double dx, double dy){
-        dx = next.x - curr.x;
-        dy = next.y - next.y;
+        this.curr.setX(next.getX());
+        this.curr.setY(next.getY());
+        next.setX(next.getX()+dx);
+        next.setY(next.getY()+dy);
+
     }
 
 }
