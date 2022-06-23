@@ -38,12 +38,12 @@ public class AccountTest {
         System.out.println(0 == child.getBalance());
         System.out.println(995 == parent.getBalance());
         System.out.println("All print statements should be true");
-    }
+    } 
 
 
     public static void main(String[] args) {
         testWithdraw();
         testMerge();
         testParent();
-    }
+    } 
 }

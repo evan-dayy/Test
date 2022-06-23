@@ -50,5 +50,7 @@ public class Account {
      */
     public void merge(Account other) {
         // TODO
+        this.balance += other.balance;
+        other.balance = 0;
     }
 }
