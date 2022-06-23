@@ -84,5 +84,6 @@ public class Account {
         // TODO
         this.balance += other.balance;
         other.balance = 0;
+        //other = new Account(0);
     }
 }

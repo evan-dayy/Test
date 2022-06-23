@@ -23,6 +23,7 @@ public class AccountTest {
         Account two = new Account(100);
         one.merge(two);
         System.out.println(0 == two.getBalance());
+        // System.out.println(two.getBalance()); Why? maybe address? cannot replace?
         System.out.println(200 == one.getBalance());
         System.out.println("Both print statements should be true");
     }
