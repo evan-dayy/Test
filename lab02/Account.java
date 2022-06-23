@@ -5,10 +5,12 @@
 public class Account {
 
     private int balance;
+    private Account parentAccount;
 
     /** Initialize an account with the given balance. */
-    public Account(int balance) {
+    public Account(int balance, Account parentAccount) {
         this.balance = balance;
+        this.parentAccount = null;
     }
 
     /** Returns the balance for the current account. */
