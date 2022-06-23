@@ -4,9 +4,9 @@
 class Point {
 
     /** The x coordinate of Point. */
-    private double x;
+    public double x;
     /** The y coordinate of Point. */
-    private double y;
+    public double y;
 
     /** A constructor that returns a point at the origin. */
     Point() {
