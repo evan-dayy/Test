@@ -5,7 +5,7 @@ import java.util.Observable;
 
 
 /** The state of a game of 2048.
- *  @author TODO: YOUR NAME HERE
+ *  @author TODO: Evan Day
  */
 public class Model extends Observable {
     /** Current contents of the board. */
@@ -29,6 +29,7 @@ public class Model extends Observable {
      *  and score 0. */
     public Model(int size) {
         // TODO: Fill in this constructor.
+
     }
 
     /** A new 2048 game where RAWVALUES contain the values of the tiles
