@@ -1,9 +1,9 @@
 public class TriangleDrawer{
 	public static void drawTriangle(){
 		int row = 1;
-		int size = 10; // args
+		int SIZE = 10; // args
 		int col = 1;
-		while(row <= size){
+		while(row <= SIZE){
 			while(row > col){
 				System.out.print("*");
 				col = col+1;
