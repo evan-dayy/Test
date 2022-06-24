@@ -29,6 +29,7 @@ public class Model extends Observable {
      *  and score 0. */
     public Model(int size) {
         // TODO: Fill in this constructor.
+         this._board = new Board(size);
 
     }
 
