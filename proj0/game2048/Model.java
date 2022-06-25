@@ -161,15 +161,33 @@ public class Model extends Observable {
 
             } else if (entryCheck == 3){/* entry = 3 and move the only one to the top. */
                 for (int row = _board.size() - 1, check = 0; row >= 0; row--) {
+
                     Tile t = _board.tile(col, row);
+
                     if (_board.tile(col, row) != null) {
                         check++;
                         if(check + row == 4 && !isPreviousNonNullSame(_board, col, row) && !merge){
                             changed = false;
                         } else if(check + row == 4 && isPreviousNonNullSame(_board, col, row) && !merge){
+                            if(row == 1){
+                                _board.move(col, _board.size() -2, t);
+                                _score += _board.tile(col, _board.size() - 1).value();
+                                merge = true;
+                                changed = true;
+                            } else if(row == 2){
+                                _board.move(col, _board.size() -1, t);
+                                _score += _board.tile(col, _board.size() - 1).value();
+                                merge = true;
+                                changed = true;
+                            }
+                        } else if(check + row == 4 && isPreviousNonNullSame(_board, col, row) && merge){
                             _board.move(col, _board.size() -2, t);
                             changed = true;
-                        } else if (check == 1 && row != _board.size() - 1) {
+                        } else if(check + row == 4 && !isPreviousNonNullSame(_board, col, row) && merge){
+                            _board.move(col, _board.size() -2, t);
+                            changed = true;
+                        }
+                        else if (check == 1 && row != _board.size() - 1) {
                             _board.move(col, _board.size() - 1, t);
                             changed = true;
                         } else if (check % 2 == 0 && isPreviousNonNullSame(_board, col, row)) {
@@ -184,14 +202,14 @@ public class Model extends Observable {
                             _board.move(col, _board.size() - 2, t);
                             changed = true;
 
-                        } else if (check % 2 == 1 && isPreviousNonNullSame(_board, col, row) && !merge) {
-                            _board.move(col, _board.size() - 3, t);
-                            changed = true;
-
-                        }else if (check % 2 == 1 && !isPreviousNonNullSame(_board, col, row) && merge) {
+                        } else if (check % 2 == 1 && !isPreviousNonNullSame(_board, col, row) && merge) {
                             _board.move(col, _board.size() - 2, t);
                             changed = true;
-                        } else if (check % 2 == 1 && !isPreviousNonNullSame(_board, col, row) && !merge) {
+                        } else if (check % 2 == 1 && isPreviousNonNullSame(_board, col, row) && !merge) {
+                            _board.move(col, _board.size() - 2, t);
+                            changed = true;
+
+                        }  else if (check % 2 == 1 && !isPreviousNonNullSame(_board, col, row) && !merge) {
                             _board.move(col, _board.size() - 3, t);
                             changed = true;
                         } else {
@@ -204,7 +222,9 @@ public class Model extends Observable {
                     if (changed) {
                         setChanged();
                     }
+
                 }
+
             }
         }
         return changed;
@@ -235,6 +255,7 @@ public class Model extends Observable {
         return i;
     }
 
+
     /*To show whether the preview entry non-null entry is same as the current */
     private boolean isPreviousNonNullSame(Board b, int col, int row){ // apply to exist tile
         int previousTileValue = 0;
@@ -242,6 +263,19 @@ public class Model extends Observable {
         while (row < 3){
             if(b.tile(col, row+1) != null){
                 previousTileValue = _board.tile(col, row+1).value();
+                break;
+            }
+            row ++ ;
+        }
+        return previousTileValue == currentTileValue;
+    }
+
+    private boolean isPreviousNonNullSame1(Board b, int col, int row){ // apply to exist tile
+        int previousTileValue = 0;
+        int currentTileValue = _board.tile(col, row+1).value();
+        while (row < 2){
+            if(b.tile(col, row+1) != null){
+                previousTileValue = _board.tile(col, row+2).value();
                 break;
             }
             row ++ ;
