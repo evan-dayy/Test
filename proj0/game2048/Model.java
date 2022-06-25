@@ -109,22 +109,44 @@ public class Model extends Observable {
     public boolean tilt(Side side) {
         boolean changed;
         changed = false;
+        _board.setViewingPerspective(Side.NORTH);
 
         // TODO: Fill in this function.
         for (int col = 0; col < _board.size(); col++) {
-            for (int row = 0; row < _board.size(); row++) {
-                Tile t = _board.tile(col, row);
-                if (_board.tile(col, row) != null) {
-                    _board.move(col, row, t);
-                    changed = true;
-                    _score += 1;
-                }
+            int entryCheck = entryCheck(_board, col);
+            if (entryCheck == 1) { /* entry = 1 and move the only one to the top. */
+                for (int row = _board.size() - 1; row >= 0; row--) {
+                    Tile t = _board.tile(col, row);
+                    if (_board.tile(col, row) != null && row != 3) {
+                        _board.move(col, 3, t);
+                        changed = true;
+                    } else {
+                        changed = false;
+                    }
+                } // Check whether there is a change
+
+            } else if (entryCheck == 2) {  /* entry = 2 and move the only one to the top. */
+                for (int row = _board.size() - 1, check = 0; row >= 0; row--) {
+                    Tile t = _board.tile(col, row);
+                    if (_board.tile(col, row) != null) {
+                        check++;
+                        if (check == 1 && row != 3) {
+                            _board.move(col, 3, t);
+                            changed = true;
+                        } else if (check != 1 && isPreviousNonNullSame(_board, col, row)) {
+                            _board.move(col, 3, t); // No adding score right now.
+                            _score += _board.tile(col, 3).value();
+                            changed = true;
+                        } else if (check != 1 && !isPreviousNonNullSame(_board, col, row)) {
+                            _board.move(col, 2, t);
+                            changed = true;
+                        } else {
+                            changed = false;
+                        }
+                    }
+                } // Check whether there is a change
             }
         }
-
-
-
-
         checkGameOver();
         if (changed) {
             setChanged();
@@ -133,16 +155,7 @@ public class Model extends Observable {
     }
 
     /* Helpers for tile */
-    private boolean isColDiff(Board b, int col){
-        for(int row = 0; row < b.size(); row ++){
-            if(b.tile(col, row) == null){
-                return true;
-            }
-        }
-        return false;
-
-    }
-
+    /* to show how may entry there in a col. */
     private int entryCheck(Board b, int col){
         int i = 0;
         for(int row = 0; row < b.size(); row ++){
@@ -152,6 +165,34 @@ public class Model extends Observable {
         }
         return i;
     }
+
+
+    /*To show number previous-null entry */
+    private int previousNullNumber(Board b, int col, int row){
+        int i = 0;
+        while(row < 3){
+            if(b.tile(col, row+1) == null) {
+                i = i + 1;
+            }
+            row = row + 1;
+        }
+        return i;
+    }
+
+    /*To show whether the preview entry non-null entry is same as the current */
+    private boolean isPreviousNonNullSame(Board b, int col, int row){ // apply to exist tile
+        int previousTileValue = 0;
+        int currentTileValue = _board.tile(col, row).value();
+        while (row < 3){
+            if(b.tile(col, row+1) != null){
+                previousTileValue = _board.tile(col, row+1).value();
+                break;
+            }
+            row ++ ;
+        }
+        return previousTileValue == currentTileValue;
+    }
+
 
     /** Checks if the game is over and sets the gameOver variable
      *  appropriately.
