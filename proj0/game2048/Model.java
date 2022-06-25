@@ -111,6 +111,16 @@ public class Model extends Observable {
         changed = false;
 
         // TODO: Fill in this function.
+        for (int c = 0; c < this._board.size(); c+= 1) {
+            for (int r = 0; r < this._board.size(); r += 1) {
+                Tile t = this._board.tile(c, r);
+                if (this._board.tile(c, r) != null) {
+                    this._board.move(c, 3, t);
+                    changed = true;
+                    this._score += 7;
+                }
+            }
+        }
 
         checkGameOver();
         if (changed) {
