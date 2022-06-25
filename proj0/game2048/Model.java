@@ -118,7 +118,6 @@ public class Model extends Observable {
                 for (int row = _board.size() - 1; row >= 0; row--) {
                     Tile t = _board.tile(col, row);
                     if (_board.tile(col, row) == null || row == 3) {
-
                         changed = false;
                     } else {
                         _board.move(col, 3, t);
@@ -252,11 +251,11 @@ public class Model extends Observable {
             for(int col = 0; col < b.size(); col ++){
                 if (b.tile(col,row) == null) {
                     return true;
-                } else if (col != 3 && row != 3 && (b.tile(col,row).value() == b.tile(col+1,row).value() || b.tile(col,row).value() == b.tile(col,row+1).value())) {
+                } else if (col != b.size() && row != b.size() && (b.tile(col,row).value() == b.tile(col+1,row).value() || b.tile(col,row).value() == b.tile(col,row+1).value())) {
                     return true;
-                } else if (col ==3 && row != 3 && b.tile(col,row).value() == b.tile(col,row+1).value()) {
+                } else if (col == b.size() && row != b.size() && b.tile(col,row).value() == b.tile(col,row+1).value()) {
                     return true;
-                } else if (col !=3 && row == 3 && b.tile(col,row).value() == b.tile(col+1,row).value()) {
+                } else if (col != b.size() && row == b.size() && b.tile(col,row).value() == b.tile(col+1,row).value()) {
                     return true;
                 }
             }
