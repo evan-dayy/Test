@@ -37,11 +37,6 @@ public class Model extends Observable {
      * to the bottom-left corner. Used for testing purposes. */
     public Model(int[][] rawValues, int score, int maxScore, boolean gameOver) {
         // TODO: Fill in this constructor.
-        this._board = new Board(rawValues, score);
-        this._maxScore = maxScore;
-        this._score = score;
-        this._gameOver = gameOver;
-
     }
 ;
     /** Return the current Tile at (COL, ROW), where 0 <= ROW < size(),
