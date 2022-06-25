@@ -109,7 +109,7 @@ public class Model extends Observable {
     public boolean tilt(Side side) {
         boolean changed;
         changed = false;
-        _board.setViewingPerspective(Side.NORTH);
+        //_board.setViewingPerspective(Side.NORTH);
 
         // TODO: Fill in this function.
         for (int col = 0; col < _board.size(); col++) {
@@ -117,11 +117,13 @@ public class Model extends Observable {
             if (entryCheck == 1) { /* entry = 1 and move the only one to the top. */
                 for (int row = _board.size() - 1; row >= 0; row--) {
                     Tile t = _board.tile(col, row);
-                    if (_board.tile(col, row) != null && row != 3) {
+                    if (_board.tile(col, row) == null || row == 3) {
+
+                        changed = false;
+                    } else {
                         _board.move(col, 3, t);
                         changed = true;
-                    } else {
-                        changed = false;
+                        break;
                     }
                 } // Check whether there is a change
 
