@@ -117,10 +117,10 @@ public class Model extends Observable {
             if (entryCheck == 1) { /* entry = 1 and move the only one to the top. */
                 for (int row = _board.size() - 1; row >= 0; row--) {
                     Tile t = _board.tile(col, row);
-                    if (_board.tile(col, row) == null || row == 3) {
+                    if (_board.tile(col, row) == null || row == _board.size() - 1) {
                         changed = false;
                     } else {
-                        _board.move(col, 3, t);
+                        _board.move(col, _board.size() - 1, t);
                         changed = true;
                         break;
                     }
@@ -131,16 +131,18 @@ public class Model extends Observable {
                     Tile t = _board.tile(col, row);
                     if (_board.tile(col, row) != null) {
                         check++;
-                        if (check == 1 && row != 3) {
-                            _board.move(col, 3, t);
+                        if (check == 1 && row != _board.size() - 1) {
+                            _board.move(col, _board.size() - 1, t);
                             changed = true;
                         } else if (check != 1 && isPreviousNonNullSame(_board, col, row)) {
-                            _board.move(col, 3, t); // No adding score right now.
-                            _score += _board.tile(col, 3).value();
+                            _board.move(col, _board.size() - 1, t); // No adding score right now.
+                            _score += _board.tile(col, _board.size() - 1).value();
                             changed = true;
+                            break;
                         } else if (check != 1 && !isPreviousNonNullSame(_board, col, row)) {
-                            _board.move(col, 2, t);
+                            _board.move(col, _board.size() - 2, t);
                             changed = true;
+                            break;
                         } else {
                             changed = false;
                         }
@@ -251,11 +253,11 @@ public class Model extends Observable {
             for(int col = 0; col < b.size(); col ++){
                 if (b.tile(col,row) == null) {
                     return true;
-                } else if (col != b.size() && row != b.size() && (b.tile(col,row).value() == b.tile(col+1,row).value() || b.tile(col,row).value() == b.tile(col,row+1).value())) {
+                } else if (col != b.size()-1 && row != b.size()-1 && ( b.tile(col,row).value() == b.tile(col+1,row).value() || b.tile(col,row).value() == b.tile(col,row+1).value())) {
                     return true;
-                } else if (col == b.size() && row != b.size() && b.tile(col,row).value() == b.tile(col,row+1).value()) {
+                }  else if (col == b.size()-1 && row != b.size()-1 && b.tile(col,row).value() == b.tile(col,row+1).value()) {
                     return true;
-                } else if (col != b.size() && row == b.size() && b.tile(col,row).value() == b.tile(col+1,row).value()) {
+                } else if (col != b.size()-1 && row == b.size()-1 && b.tile(col,row).value() == b.tile(col+1,row).value()) {
                     return true;
                 }
             }
