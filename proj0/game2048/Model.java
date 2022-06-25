@@ -111,22 +111,46 @@ public class Model extends Observable {
         changed = false;
 
         // TODO: Fill in this function.
-        for (int c = 0; c < this._board.size(); c+= 1) {
-            for (int r = 0; r < this._board.size(); r += 1) {
-                Tile t = this._board.tile(c, r);
-                if (this._board.tile(c, r) != null) {
-                    this._board.move(c, 3, t);
+        for (int col = 0; col < _board.size(); col++) {
+            for (int row = 0; row < _board.size(); row++) {
+                Tile t = _board.tile(col, row);
+                if (_board.tile(col, row) != null) {
+                    _board.move(col, row, t);
                     changed = true;
-                    this._score += 7;
+                    _score += 1;
                 }
             }
         }
+
+
+
 
         checkGameOver();
         if (changed) {
             setChanged();
         }
         return changed;
+    }
+
+    /* Helpers for tile */
+    private boolean isColDiff(Board b, int col){
+        for(int row = 0; row < b.size(); row ++){
+            if(b.tile(col, row) == null){
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    private int entryCheck(Board b, int col){
+        int i = 0;
+        for(int row = 0; row < b.size(); row ++){
+            if(b.tile(col, row) != null){
+                i = i +1;
+            }
+        }
+        return i;
     }
 
     /** Checks if the game is over and sets the gameOver variable
