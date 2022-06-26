@@ -42,7 +42,7 @@ public class Model extends Observable {
         this._gameOver = gameOver;
         this._maxScore = maxScore;
     }
-;
+
     /** Return the current Tile at (COL, ROW), where 0 <= ROW < size(),
      *  0 <= COL < size(). Returns null if there is no tile there.
      *  Used for testing. Should be deprecated and removed.
@@ -112,20 +112,27 @@ public class Model extends Observable {
          boolean changed;
          boolean merge;
          changed = false;
-         _board.setViewingPerspective(Side.NORTH);
-         // TODO: Fill in this function.
          Board b = this._board;
          int changedNum = 0;
+         Side n = Side.NORTH;
+         Side s = Side.SOUTH;
+         Side e = Side.EAST;
+         Side w = Side.WEST;
+
+
+
+
+
+
+         // TODO: Fill in this function.
+         _board.setViewingPerspective(side); // North.View
 
          for (int col = 0; col < b.size(); col+=1){
              int preciousValue = 0;
              int currentValue = 0;
-             boolean isMerge = false;
              int nullTile = 0;
              boolean shouldMerged = false;
              int mergedNum = 0;
-             int mergedNumCopy = 0;
-             int nnTile = 0;
              int row = b.size()-1;
              int equalCount = 0;
 
@@ -140,7 +147,6 @@ public class Model extends Observable {
                          nullTile ++;
                          break;
                      } else {
-                         nnTile ++;
                          preciousValue = currentValue;
                          currentValue = b.tile(col, row).value();
                      }
@@ -201,6 +207,7 @@ public class Model extends Observable {
          if(changedNum > 0){
              changed = true;
          }
+         _board.setViewingPerspective(n); // North.View
          checkGameOver();
          if(changed){
              setChanged();
