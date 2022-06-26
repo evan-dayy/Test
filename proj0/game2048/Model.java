@@ -125,16 +125,16 @@ public class Model extends Observable {
              boolean isMerge = false;
              int nullTile = 0;
              boolean shouldMerged = false;
-             boolean mergedMark = false;
              int mergedNum = 0;
              int nnTile = 0;
-             int rowNum = 0;
+             int row = b.size()-1;
+             int equalCount = 0;
              if(isNullCol(b, col)){
                  break;
              }
              while(true){
 
-                 for (int row = b.size()-1;row >=0; row-=1){
+                 while (row >= 0){
                      if(!hasNumber(b, col, row)){
                          nullTile ++;
                      } else {
@@ -143,7 +143,7 @@ public class Model extends Observable {
                          currentValue = b.tile(col, row).value();
                      }
 
-                     if(row == b.size()){
+                     if(row == b.size()-1){
                          break;
                      }
 
@@ -151,28 +151,17 @@ public class Model extends Observable {
                          Tile t = b.tile(col, row);
                          if (preciousValue == currentValue){
                              shouldMerged = true;
+                             equalCount += 1;
                          }
 
-                         if(shouldMerged && mergedMark){
+                         if(shouldMerged && equalCount % 2 == 1){
                              b.move(col, row + nullTile + mergedNum + 1, t);
                              _score += b.tile(col, row + nullTile + 1 + mergedNum).value();
                              changed = true;
                              shouldMerged = false;
-                             mergedMark = false;
-                             break;
-
-                         }
-
-
-                         if(shouldMerged){
-                             b.move(col, row + nullTile + 1+ mergedNum, t);
-                             _score += b.tile(col, row + nullTile + 1 + mergedNum).value();
-                             changed = true;
-                             shouldMerged = false;
                              mergedNum += 1;
-                             mergedMark = true;
-                             // currentValue = _score;
                              break;
+
                          }
 
                          // not merged
@@ -183,13 +172,13 @@ public class Model extends Observable {
 
 
                  }
-                 rowNum ++;
+                 row --;
 
                  if(changed){
                      changedNum ++;
                  } // inner loop end once to check whether there is a change
 
-                 if(rowNum == b.size()){
+                 if(row + 1 == 0){
                      break;
                  } // end the while loop
 
@@ -210,20 +199,36 @@ public class Model extends Observable {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     /* Helpers for tile */
     /* to show how may entry there in a col. */
+    private boolean isEvenEqual(Board b, int col){
+        int preciousValue = 0;
+        int currentValue = 0;
+        if(isNullCol(b, col)){
+            return false;
+        }
+        for(int row = 0; row < b.size(); row ++){
+            if(b.tile(col, row) == null){
+                return false;
+            }
+        }
+        for(int row = 0; row < b.size(); row ++){
+            if(row == 0){
+                currentValue = b.tile(col, row).value();
+                continue;
+            }
+            if (row > 0){
+                preciousValue = currentValue;
+                currentValue = b.tile(col, row).value();
+            }
+            if(currentValue != preciousValue){
+                return false;
+            }
+
+        }
+        return true;
+    }
+
     private boolean hasNumber(Board b, int col, int row){
         return b.tile(col, row) != null;
     }
