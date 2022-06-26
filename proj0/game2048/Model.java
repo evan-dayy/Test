@@ -126,6 +126,7 @@ public class Model extends Observable {
              int nullTile = 0;
              boolean shouldMerged = false;
              int mergedNum = 0;
+             int mergedNumCopy = 0;
              int nnTile = 0;
              int row = b.size()-1;
              int equalCount = 0;
@@ -146,8 +147,8 @@ public class Model extends Observable {
                      if(row == b.size()-1){
                          break;
                      }
-
-                     if(nullTile > 0){
+                 // Here is a pattern for col start with 0
+                     //if(nullTile > 0){
                          Tile t = b.tile(col, row);
                          if (preciousValue == currentValue){
                              shouldMerged = true;
@@ -167,8 +168,14 @@ public class Model extends Observable {
                          // not merged
                          b.move(col, row + nullTile + mergedNum, t);
                          changed = true;
+                         if(mergedNum < 0){
+                             equalCount = 0;
+                             break;
+                         }
+                         equalCount --;
                          break;
-                     }
+                    // }
+                 // what about it does not start as 0.
 
 
                  }
