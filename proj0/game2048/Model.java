@@ -144,6 +144,9 @@ public class Model extends Observable {
                          preciousValue = currentValue;
                          currentValue = b.tile(col, row).value();
                      }
+                     if(row == 3){
+                         break;
+                     }
 
                  // Here is a pattern for col start with 0
                      //if(nullTile > 0){
@@ -151,6 +154,8 @@ public class Model extends Observable {
                          if (preciousValue == currentValue){
                              shouldMerged = true;
 
+                         } else {
+                             shouldMerged = false;
                          }
 
                          if((shouldMerged && equalCount % 2 == 0) || (shouldMerged && equalCount == 0)){
