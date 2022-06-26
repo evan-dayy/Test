@@ -115,23 +115,38 @@ public class Model extends Observable {
 
 
         // TODO: Fill in this function.
+
+
+
         for (int col = 0; col < _board.size(); col++) {
             merge = false;
             int entryCheck = entryCheck(_board, col);
             if (entryCheck == 1) { /* entry = 1 and move the only one to the top. */
                 for (int row = _board.size() - 1; row >= 0; row--) {
                     Tile t = _board.tile(col, row);
-                    if (_board.tile(col, row) == null || row == _board.size() - 1) {
-                        changed = false;
-                    } else {
+                    if (_board.tile(col, row) != null && row != _board.size() - 1) {
                         _board.move(col, _board.size() - 1, t);
                         changed = true;
+                        break;
+                    } else {
+                        changed = false;
                     }
                     checkGameOver();
                     if (changed) {
                         setChanged();
                     }
                 } // Check whether there is a change
+
+
+
+
+
+
+
+
+
+
+
             } else if (entryCheck == 2) {  /* entry = 2 and move the only one to the top. */
                 for (int row = _board.size() - 1, check = 0; row >= 0; row--) {
                     Tile t = _board.tile(col, row);
@@ -159,6 +174,10 @@ public class Model extends Observable {
                     }
                 } // Check whether there is a change
 
+
+
+
+
             } else if (entryCheck == 3){/* entry = 3 and move the only one to the top. */
                 for (int row = _board.size() - 1, check = 0; row >= 0; row--) {
 
@@ -183,6 +202,7 @@ public class Model extends Observable {
                         } else if(check + row == 4 && isPreviousNonNullSame(_board, col, row) && merge){
                             _board.move(col, _board.size() -2, t);
                             changed = true;
+                            break;
                         } else if(check + row == 4 && !isPreviousNonNullSame(_board, col, row) && merge){
                             _board.move(col, _board.size() -2, t);
                             changed = true;
@@ -207,6 +227,7 @@ public class Model extends Observable {
                             changed = true;
                         } else if (check % 2 == 1 && isPreviousNonNullSame(_board, col, row) && !merge) {
                             _board.move(col, _board.size() - 2, t);
+                            _score += _board.tile(col, _board.size() - 2).value();
                             changed = true;
 
                         }  else if (check % 2 == 1 && !isPreviousNonNullSame(_board, col, row) && !merge) {
@@ -226,6 +247,8 @@ public class Model extends Observable {
                 }
 
             }
+
+
         }
         return changed;
     }
