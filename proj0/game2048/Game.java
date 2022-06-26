@@ -59,7 +59,10 @@ public class Game {
     }
 
     /** Return the side indicated by KEY ("Up", "Down", "Left",
-     *  or "Right"). */
+     *  or "Right"). *//
+    54p'
+
+    +-
     private Side keyToSide(String key) {
         return switch (key) {
             case KeyEvent.VK_UP + "", "\u2191" -> NORTH;

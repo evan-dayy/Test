@@ -14,15 +14,15 @@ public class TestUpOnly extends TestUtils {
     @Test
     public void testUpNoMerge() {
         int[][] before = new int[][] {
-                {0, 0, 4, 0},
-                {0, 0, 0, 2},
-                {0, 0, 0, 0},
-                {0, 0, 0, 0},
+                {1, 1, 1, 1},
+                {1, 3, 1, 2},
+                {1, 2, 3, 2}, // it works when no values in the last line...
+                {1, 4, 3, 4},
         };
         int[][] after = new int[][] {
-                {0, 0, 4, 2},
+                {0, 2, 0, 0},
                 {0, 0, 0, 0},
-                {0, 0, 0, 0},
+                {0, 2, 0, 0},
                 {0, 0, 0, 0},
         };
 
@@ -30,20 +30,20 @@ public class TestUpOnly extends TestUtils {
         String prevBoard = model.toString();
         boolean changed = model.tilt(Side.NORTH);
         checkChanged(Side.NORTH, true, changed);
-        checkModel(after, 0, 0, prevBoard, Side.NORTH);
+        checkModel(after, 12, 0, prevBoard, Side.NORTH);
     }
 
     /** A basic merge. */
     @Test
     public void testUpBasicMerge() {
         int[][] before = new int[][] {
+                {1, 2, 0, 0},
                 {0, 0, 0, 0},
-                {0, 0, 2, 0},
-                {0, 0, 2, 0},
+                {2, 2, 0, 0},
                 {0, 0, 0, 0},
         };
         int[][] after = new int[][] {
-                {0, 0, 4, 0},
+                {0, 8, 4, 16},
                 {0, 0, 0, 0},
                 {0, 0, 0, 0},
                 {0, 0, 0, 0},
@@ -53,30 +53,30 @@ public class TestUpOnly extends TestUtils {
         String prevBoard = model.toString();
         boolean changed = model.tilt(Side.NORTH);
         checkChanged(Side.NORTH, true, changed);
-        checkModel(after, 4, 0, prevBoard, Side.NORTH);
+        checkModel(after, 28, 0, prevBoard, Side.NORTH);
     }
 
     /** A triple merge. Only the leading 2 tiles should merge. */
     @Test
     public void testUpTripleMerge() {
         int[][] before = new int[][] {
-                {0, 0, 2, 0},
-                {0, 0, 0, 0},
-                {0, 0, 2, 0},
-                {0, 0, 2, 0},
+                {2, 0, 0, 2},
+                {0, 2, 0, 0},
+                {0, 0, 2, 4},
+                {4, 3, 2, 4},
         };
         int[][] after = new int[][] {
-                {0, 0, 4, 0},
-                {0, 0, 2, 0},
+                {4, 4, 4, 4},
+                {4, 2, 2, 4},
                 {0, 0, 0, 0},
-                {0, 0, 0, 0},
+                {4, 0, 0, 0},
         };
 
         updateModel(before, 0, 0, false);
         String prevBoard = model.toString();
         boolean changed = model.tilt(Side.NORTH);
         checkChanged(Side.NORTH, true, changed);
-        checkModel(after, 4, 0, prevBoard, Side.NORTH);
+        checkModel(after, 12, 0, prevBoard, Side.NORTH);
     }
 
     /** A tricky merge.
@@ -89,14 +89,14 @@ public class TestUpOnly extends TestUtils {
     @Test
     public void testUpTrickyMerge() {
         int[][] before = new int[][] {
-                {0, 0, 2, 0},
-                {0, 0, 2, 0},
-                {0, 0, 0, 0},
-                {0, 0, 4, 0},
+                {2, 4, 4, 4},
+                {2, 0, 2, 4},
+                {4, 2, 2, 0},
+                {0, 2, 0, 2},
         };
         int[][] after = new int[][] {
-                {0, 0, 4, 0},
-                {0, 0, 4, 0},
+                {4, 4, 4, 4},
+                {4, 4, 4, 4},
                 {0, 0, 0, 0},
                 {0, 0, 0, 0},
         };
@@ -105,6 +105,8 @@ public class TestUpOnly extends TestUtils {
         String prevBoard = model.toString();
         boolean changed = model.tilt(Side.NORTH);
         checkChanged(Side.NORTH, true, changed);
-        checkModel(after, 4, 0, prevBoard, Side.NORTH);
+        checkModel(after, 16, 0, prevBoard, Side.NORTH);
     }
+
+
 }

@@ -23,10 +23,10 @@ public class TestAtLeastOneMoveExists {
     @Test
     public void testEmptySpace() {
         int[][] rawVals = new int[][] {
-                {0, 0, 4, 0},
-                {0, 0, 0, 0},
-                {0, 2, 0, 0},
-                {0, 0, 0, 0},
+                {1, 0, 0, 0},
+                {1, 0, 4, 0},
+                {2, 0, 0, 0},
+                {2, 0, 3, 0},
         };
 
         b = new Board(rawVals, 0);
