@@ -117,8 +117,6 @@ public class Model extends Observable {
          Board b = this._board;
          int changedNum = 0;
 
-
-
          for (int col = 0; col < b.size(); col+=1){
              int preciousValue = 0;
              int currentValue = 0;
@@ -130,10 +128,12 @@ public class Model extends Observable {
              int nnTile = 0;
              int row = b.size()-1;
              int equalCount = 0;
-             if(isNullCol(b, col)){
-                 break;
-             }
+
              while(true){
+
+                 if(isNullCol(b, col)){
+                     break;
+                 }
 
                  while (row >= 0){
                      if(!hasNumber(b, col, row)){
