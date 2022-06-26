@@ -138,29 +138,28 @@ public class Model extends Observable {
                  while (row >= 0){
                      if(!hasNumber(b, col, row)){
                          nullTile ++;
+                         break;
                      } else {
                          nnTile ++;
                          preciousValue = currentValue;
                          currentValue = b.tile(col, row).value();
                      }
 
-                     if(row == b.size()-1){
-                         break;
-                     }
                  // Here is a pattern for col start with 0
                      //if(nullTile > 0){
                          Tile t = b.tile(col, row);
                          if (preciousValue == currentValue){
                              shouldMerged = true;
-                             equalCount += 1;
+
                          }
 
-                         if(shouldMerged && equalCount % 2 == 1){
+                         if((shouldMerged && equalCount % 2 == 0) || (shouldMerged && equalCount == 0)){
                              b.move(col, row + nullTile + mergedNum + 1, t);
                              _score += b.tile(col, row + nullTile + 1 + mergedNum).value();
                              changed = true;
                              shouldMerged = false;
                              mergedNum += 1;
+                             equalCount += 1;
                              break;
 
                          }
@@ -168,7 +167,7 @@ public class Model extends Observable {
                          // not merged
                          b.move(col, row + nullTile + mergedNum, t);
                          changed = true;
-                         if(mergedNum < 0){
+                         if(equalCount <= 0){
                              equalCount = 0;
                              break;
                          }
