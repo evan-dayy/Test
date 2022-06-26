@@ -106,39 +106,107 @@ public class Model extends Observable {
      *    value, then the leading two tiles in the direction of motion merge,
      *    and the trailing tile does not.
      */
-    public boolean tilt(Side side) {
-        boolean changed;
-        boolean merge;
-
-        changed = false;
-        _board.setViewingPerspective(Side.NORTH);
 
 
-        // TODO: Fill in this function.
-
-
-
-        for (int col = 0; col < _board.size(); col++) {
-            merge = false;
-            int entryCheck = entryCheck(_board, col);
-            if (entryCheck == 1) { /* entry = 1 and move the only one to the top. */
-                for (int row = _board.size() - 1; row >= 0; row--) {
-                    Tile t = _board.tile(col, row);
-                    if (_board.tile(col, row) != null && row != _board.size() - 1) {
-                        _board.move(col, _board.size() - 1, t);
-                        changed = true;
-                        break;
-                    } else {
-                        changed = false;
-                    }
-                    checkGameOver();
-                    if (changed) {
-                        setChanged();
-                    }
-                } // Check whether there is a change
+     public boolean tilt(Side side) {
+         boolean changed;
+         boolean merge;
+         changed = false;
+         _board.setViewingPerspective(Side.NORTH);
+         // TODO: Fill in this function.
+         Board b = this._board;
+         int changedNum = 0;
 
 
 
+         for (int col = 0; col < b.size(); col+=1){
+             int preciousValue = 0;
+             int currentValue = 0;
+             boolean isMerge = false;
+             int nullTile = 0;
+             boolean shouldMerged = false;
+             boolean mergedMark = false;
+             int mergedNum = 0;
+             int nnTile = 0;
+             int rowNum = 0;
+             if(isNullCol(b, col)){
+                 break;
+             }
+             while(true){
+
+                 for (int row = b.size()-1;row >=0; row-=1){
+                     if(!hasNumber(b, col, row)){
+                         nullTile ++;
+                     } else {
+                         nnTile ++;
+                         preciousValue = currentValue;
+                         currentValue = b.tile(col, row).value();
+                     }
+
+                     if(row == b.size()){
+                         break;
+                     }
+
+                     if(nullTile > 0){
+                         Tile t = b.tile(col, row);
+                         if (preciousValue == currentValue){
+                             shouldMerged = true;
+                         }
+
+                         if(shouldMerged && mergedMark){
+                             b.move(col, row + nullTile + mergedNum + 1, t);
+                             _score += b.tile(col, row + nullTile + 1 + mergedNum).value();
+                             changed = true;
+                             shouldMerged = false;
+                             mergedMark = false;
+                             break;
+
+                         }
+
+
+                         if(shouldMerged){
+                             b.move(col, row + nullTile + 1+ mergedNum, t);
+                             _score += b.tile(col, row + nullTile + 1 + mergedNum).value();
+                             changed = true;
+                             shouldMerged = false;
+                             mergedNum += 1;
+                             mergedMark = true;
+                             // currentValue = _score;
+                             break;
+                         }
+
+                         // not merged
+                         b.move(col, row + nullTile + mergedNum, t);
+                         changed = true;
+                         break;
+                     }
+
+
+                 }
+                 rowNum ++;
+
+                 if(changed){
+                     changedNum ++;
+                 } // inner loop end once to check whether there is a change
+
+                 if(rowNum == b.size()){
+                     break;
+                 } // end the while loop
+
+             }
+
+
+         }
+
+         if(changedNum > 0){
+             changed = true;
+         }
+         checkGameOver();
+         if(changed){
+             setChanged();
+         }
+         return changed;
+     }
 
 
 
@@ -147,114 +215,34 @@ public class Model extends Observable {
 
 
 
-            } else if (entryCheck == 2) {  /* entry = 2 and move the only one to the top. */
-                for (int row = _board.size() - 1, check = 0; row >= 0; row--) {
-                    Tile t = _board.tile(col, row);
-                    if (_board.tile(col, row) != null) {
-                        check++;
-                        if (check == 1 && row != _board.size() - 1) {
-                            _board.move(col, _board.size() - 1, t);
-                            changed = true;
-                        } else if (check != 1 && isPreviousNonNullSame(_board, col, row)) {
-                            _board.move(col, _board.size() - 1, t); // No adding score right now.
-                            _score += _board.tile(col, _board.size() - 1).value();
-                            changed = true;
-
-                        } else if (check != 1 && !isPreviousNonNullSame(_board, col, row)) {
-                            _board.move(col, _board.size() - 2, t);
-                            changed = true;
-
-                        } else {
-                            changed = false;
-                        }
-                    }
-                    checkGameOver();
-                    if (changed) {
-                        setChanged();
-                    }
-                } // Check whether there is a change
 
 
 
 
 
-            } else if (entryCheck == 3){/* entry = 3 and move the only one to the top. */
-                for (int row = _board.size() - 1, check = 0; row >= 0; row--) {
 
-                    Tile t = _board.tile(col, row);
-
-                    if (_board.tile(col, row) != null) {
-                        check++;
-                        if(check + row == 4 && !isPreviousNonNullSame(_board, col, row) && !merge){
-                            changed = false;
-                        } else if(check + row == 4 && isPreviousNonNullSame(_board, col, row) && !merge){
-                            if(row == 1){
-                                _board.move(col, _board.size() -2, t);
-                                _score += _board.tile(col, _board.size() - 1).value();
-                                merge = true;
-                                changed = true;
-                            } else if(row == 2){
-                                _board.move(col, _board.size() -1, t);
-                                _score += _board.tile(col, _board.size() - 1).value();
-                                merge = true;
-                                changed = true;
-                            }
-                        } else if(check + row == 4 && isPreviousNonNullSame(_board, col, row) && merge){
-                            _board.move(col, _board.size() -2, t);
-                            changed = true;
-                            break;
-                        } else if(check + row == 4 && !isPreviousNonNullSame(_board, col, row) && merge){
-                            _board.move(col, _board.size() -2, t);
-                            changed = true;
-                        }
-                        else if (check == 1 && row != _board.size() - 1) {
-                            _board.move(col, _board.size() - 1, t);
-                            changed = true;
-                        } else if (check % 2 == 0 && isPreviousNonNullSame(_board, col, row)) {
-                            _board.move(col, _board.size() - 1, t); // No adding score right now.
-                            _score += _board.tile(col, _board.size() - 1).value();
-                            changed = true;
-                            merge = true;
-                        } else if (check % 2 == 0 && row!=_board.size() - 2 && !isPreviousNonNullSame(_board, col, row)) {
-                            _board.move(col, _board.size() - 2, t); // No adding score right now.
-                            changed = true;
-                        } else if (check % 2 == 1 && isPreviousNonNullSame(_board, col, row) && merge) {
-                            _board.move(col, _board.size() - 2, t);
-                            changed = true;
-
-                        } else if (check % 2 == 1 && !isPreviousNonNullSame(_board, col, row) && merge) {
-                            _board.move(col, _board.size() - 2, t);
-                            changed = true;
-                        } else if (check % 2 == 1 && isPreviousNonNullSame(_board, col, row) && !merge) {
-                            _board.move(col, _board.size() - 2, t);
-                            _score += _board.tile(col, _board.size() - 2).value();
-                            changed = true;
-
-                        }  else if (check % 2 == 1 && !isPreviousNonNullSame(_board, col, row) && !merge) {
-                            _board.move(col, _board.size() - 3, t);
-                            changed = true;
-                        } else {
-                            changed = false;
-                        }
-                    } else {
-                        changed = false;
-                    }
-                    checkGameOver();
-                    if (changed) {
-                        setChanged();
-                    }
-
-                }
-
-            }
-
-
-        }
-        return changed;
-    }
 
     /* Helpers for tile */
     /* to show how may entry there in a col. */
+    private boolean hasNumber(Board b, int col, int row){
+        return b.tile(col, row) != null;
+    }
+
+    private boolean isNullCol(Board b, int col){
+        int i = 0;
+        for(int row = 0; row < b.size(); row ++){
+            if(b.tile(col, row) == null){
+                i ++;
+            }
+
+            if(i == b.size()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     private int entryCheck(Board b, int col){
         int i = 0;
         for(int row = 0; row < b.size(); row ++){
@@ -363,11 +351,11 @@ public class Model extends Observable {
             for(int col = 0; col < b.size(); col ++){
                 if (b.tile(col,row) == null) {
                     return true;
-                } else if (col != b.size()-1 && row != b.size()-1 && ( b.tile(col,row).value() == b.tile(col+1,row).value() || b.tile(col,row).value() == b.tile(col,row+1).value())) {
+                } else if (col != b.size()-1 && row != b.size()-1 && b.tile(col+1,row) != null && b.tile(col,row+1) != null && ( b.tile(col,row).value() == b.tile(col+1,row).value() || b.tile(col,row).value() == b.tile(col,row+1).value())) {
                     return true;
-                }  else if (col == b.size()-1 && row != b.size()-1 && b.tile(col,row).value() == b.tile(col,row+1).value()) {
+                }  else if (col == b.size()-1 && row != b.size()-1 && b.tile(col,row+1) != null && b.tile(col,row).value() == b.tile(col,row+1).value()) {
                     return true;
-                } else if (col != b.size()-1 && row == b.size()-1 && b.tile(col,row).value() == b.tile(col+1,row).value()) {
+                } else if (col != b.size()-1 && row == b.size()-1 && b.tile(col+1,row) != null && b.tile(col,row).value() == b.tile(col+1,row).value()) {
                     return true;
                 }
             }
