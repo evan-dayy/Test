@@ -51,12 +51,12 @@ public class MeasurementTest {
     public void plus() {
         Measurement m = new Measurement(4, 3);
         Measurement m2 = new Measurement(1,4);
-        Measurement m3 = new Measurement(1);
-        Measurement m4 = new Measurement();
+        Measurement m3 = new Measurement(3, 9);
+        Measurement m4 = new Measurement(3,11);
 
         assertTrue(new Measurement(5,7).equals(m.plus(m2)));
-        assertTrue(new Measurement(5,3).equals(m.plus(m3)));
-        assertTrue(new Measurement(4,3).equals(m.plus(m4)));
+        assertTrue(new Measurement(8,0).equals(m.plus(m3)));
+        assertTrue(new Measurement(8,2).equals(m.plus(m4)));
 
     }
 
@@ -64,12 +64,12 @@ public class MeasurementTest {
     public void minus() {
         Measurement m = new Measurement(4, 8);
         Measurement m2 = new Measurement(1,4);
-        Measurement m3 = new Measurement(1);
-        Measurement m4 = new Measurement();
+        Measurement m3 = new Measurement(1,8);
+        Measurement m4 = new Measurement(3,9);
 
         assertTrue(new Measurement(3,4).equals(m.minus(m2)));
-        assertTrue(new Measurement(3,8).equals(m.minus(m3)));
-        assertTrue(new Measurement(4,8).equals(m.minus(m4)));
+        assertTrue(new Measurement(3,0).equals(m.minus(m3)));
+        assertTrue(new Measurement(0,11).equals(m.minus(m4)));
 
     }
 
