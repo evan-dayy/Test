@@ -85,15 +85,14 @@ public class MeasurementTest {
         assertTrue(new Measurement(4,9).equals(m2.multiple(3)));
         assertTrue(new Measurement(7,9).equals(m3.multiple(3)));
         assertTrue(new Measurement(6,0).equals(m4.multiple(3)));
-
     }
 
     // TODO: Add additional JUnit tests for Measurement.java here.
 
     @Test
     public void tostring() {
-        Measurement m = new Measurement(0, 7);
-        assertEquals("0'7\"", m.toString());
+        Measurement m = new Measurement(1, 7);
+        assertEquals("1'7\"", m.toString());
     }
 
 }
