@@ -3,21 +3,25 @@
  * should be _well-formed_, that is, the number of inches should not be >= 12.
  */
 public class Measurement {
+    private int feet;
+    private int inches;
 
     /**
      * Constructor: initialize this object to be a measurement of 0 feet, 0
      * inches
      */
     public Measurement() {
-
+        feet = 0;
+        inches = 0;
     }
 
     /**
      * Constructor: takes a number of feet as its single argument, using 0 as
      * the number of inches
      */
-    public Measurement(int feet) {
-
+    public Measurement(int f) {
+        feet = f;
+        inches = 0;
     }
 
     /**
@@ -25,8 +29,9 @@ public class Measurement {
      * of inches as arguments (in that order), and does the appropriate
      * initialization
      */
-    public Measurement(int feet, int inches) {
-
+    public Measurement(int f, int i) {
+        feet = f;
+        inches = i;
     }
 
     /**
@@ -34,7 +39,7 @@ public class Measurement {
      * Measurement has 1 foot and 6 inches, this method should return 1.
      */
     public int getFeet() {
-        return 0; // provided to allow the file to compile
+        return this.feet; // provided to allow the file to compile
     }
 
     /**
@@ -42,7 +47,7 @@ public class Measurement {
      * Measurement has 1 foot and 6 inches, this method should return 6.
      */
     public int getInches() {
-        return 0; // provided to allow the file to compile
+        return this.inches; // provided to allow the file to compile
     }
 
     /**
@@ -52,7 +57,12 @@ public class Measurement {
      * @return a new Measurement containing the sum of this and m2.
      */
     public Measurement plus(Measurement m2) {
-        return new Measurement(); // provided to allow the file to compile
+        int feet = this.getFeet() + m2.getFeet();
+        int inches = this.getInches() + m2.getInches();
+        if(inches >= 12){
+            feet = feet + Math.floorDiv(inches, 12);inches = inches % 12;
+        }
+        return new Measurement(feet, inches); // provided to allow the file to compile
     }
 
     /**
@@ -63,14 +73,21 @@ public class Measurement {
      * @return a new Measurement containing the difference of this and m2.
      */
     public Measurement minus(Measurement m2) {
-        return new Measurement(); // provided to allow the file to compile
+        int feet = this.getFeet() - m2.getFeet();
+        int inches = this.getInches()  - m2.getInches();
+        if (inches < 0){
+            feet = feet - 1;
+            inches = this.getInches() + 12 - m2.getInches();
+        }
+
+        return new Measurement(feet, inches); // provided to allow the file to compile
     }
 
     /**
      * Returns a new Measurement that is the current measurement multiplied by
      * n. For example, if this object represents a measurement of 7 inches,
      * this.multiple(3) should return an object that represents 1 foot,
-     * 9 inches (which totals to 21 inches).
+     * 9 inches (which totals to 21 inches). 21
      *
      * The current measurement should not change.
      *
@@ -78,7 +95,14 @@ public class Measurement {
      * @return a new Measurement containing this times multipleAmount
      */
     public Measurement multiple(int multipleAmount) {
-        return new Measurement(); // provided to allow the file to compile
+        int feet = this.getFeet() * multipleAmount;
+        int inches = this.getInches() * multipleAmount;
+        if (inches > 12) {
+            feet = feet + Math.floorDiv(inches, 12);
+            inches = inches % 12;
+        }
+
+        return new Measurement(feet, inches); // provided to allow the file to compile
     }
 
     /**
@@ -92,7 +116,17 @@ public class Measurement {
      */
     @Override
     public String toString() {
-        return ""; // provided to allow the file to compile
+        return this.getFeet() + "'" + this.getInches() + "\""; // provided to allow the file to compile
     }
+
+
+    // override the equals function.
+    @Override
+    public boolean equals(Object o){
+        Measurement other = (Measurement) o;
+        return (this.feet == other.feet) && (this.inches == other.inches);
+
+    }
+
 
 }
